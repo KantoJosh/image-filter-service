@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.neuralink.interviewing";
+
+// A single image which might be grayscale, or color.
+//
+// When color == false, this image is grayscale.
+// In this case, the data is single channel (one byte per pixel)
+// and stored row-wise.
+//
+// When color == true, this is a color image.  In
+// this case, the data is 3 channel rgb with the rgb
+// triplets stored row-wise (one byte per channel, 3 bytes
+// per pixel).
+message NLImage {
+    bool color = 1;
+    bytes data = 2;
+    int32 width = 3;
+    int32 height = 4;
+}
+
+// A request to rotate an image by some multiple of 90 degrees.
+//
+// The input image may be color or grayscale.
+//
+// Positive rotations are counter clockwise.
+message NLImageRotateRequest {
+    enum Rotation {
+        NONE = 0;
+        NINETY_DEG = 1;
+        ONE_EIGHTY_DEG = 2;
+        TWO_SEVENTY_DEG = 3;
+    }
+
+    Rotation rotation = 1;
+    NLImage image = 2;
+}
+
+service NLImageService {
+    rpc RotateImage(NLImageRotateRequest) returns (NLImage);
+
+    // A request to mean filter the given image and return the new filtered
+    // image.  The mean filter can be computed for each pixel in an image by
+    // taking the average of a pixel and all of its neighbors.  As an example,
+    // if you have an image with 9 pixels:
+    //   A B C
+    //   D E F
+    //   G H I
+    // Then a few examples of pixels from the mean filter of this
+    // image are:
+    //    A_mean_filter = (A + B + E + D) / 4
+    //    D_mean_filter = (D + A + B + E + G + H) / 6
+    //    E_mean_filter = (E + A + B + C + D + F + G + H + I) / 9
+    // For color images, the mean filter is the image with this filter
+    // run on each of the 3 channels independently.
+    rpc MeanFilter(NLImage) returns (NLImage);
+}
