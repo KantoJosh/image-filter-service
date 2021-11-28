@@ -1,11 +1,11 @@
 # Deliverables
 
-1. Clean install of Ubuntu 18.04
-2. See `setup` file in top level directory
-3. See `build` file in top level directory
-4. See `server.py` for server implementation and `server` script for execution
-5. See `client.py` for client implementation and `client` script for execution
-6. See `Discussion` below
+
+- See `setup` file in top level directory for setup script
+- See `build` file in top level directory for build script
+- See `server.py` for server implementation and `server` script for execution
+- See `client.py` for client implementation and `client` script for execution
+- See `Discussion` below
 
 # Discussion
 
@@ -13,13 +13,12 @@
 - Deprecate usage of Pillow in client.py to consolidate image processing with only pen-CV library. Currently, Pillow is being relied on for detecting whether
   an image is grayscale/RGB in a clean fashion, containing images in memory to pass its data via RPCs
 
-# NOTES (for myself)
-
-## Compile protos
-
-`python3 -m grpc_tools.protoc -I proto/ --python_out=. --grpc_python_out=. proto/image.proto`
 
 ## Usage
+
+### Compile protos
+
+`python3 -m grpc_tools.protoc -I proto/ --python_out=. --grpc_python_out=. proto/image.proto`
 
 #### Client
 
